@@ -101,7 +101,7 @@ export default function App() {
     axiosWithAuth()
       .put(`${articlesUrl}/${article_id}`,  changes)
       .then(res => {
-        console.log(res)
+        // console.log(res)
         setArticles(articles.map (art => {
           return art.article_id===article_id
           ? res.data.article
@@ -112,12 +112,11 @@ export default function App() {
         setSpinnerOn(false)          
         })
       .catch(err => {
-        console.log({err})
+        // console.log({err})
         setMessage(err.message)
         setSpinnerOn(false)
       })
-    // ✨ implement
-    // You got this!
+
   }
 
   const deleteArticle = article_id => {
@@ -126,7 +125,7 @@ export default function App() {
     axiosWithAuth()
       .delete(`${articlesUrl}/${article_id}`)
       .then(res => {
-        console.log(res)
+        // console.log(res)
         setArticles(articles.filter(art => {
           return art.article_id !==article_id
         }))
@@ -140,7 +139,6 @@ export default function App() {
   }
 
   return (
-    // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <React.StrictMode>
       <Spinner on = {spinnerOn}/>
       <Message message= {message}/>

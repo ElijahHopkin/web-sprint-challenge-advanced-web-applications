@@ -19,7 +19,7 @@ export default function Articles(props) {
   }, [])
 
   const editHandler = (article_id) => {
-    console.log('working', article_id)
+    // console.log('working', article_id)
     setCurrentArticleId(article_id)
 
   }
