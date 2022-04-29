@@ -5,6 +5,8 @@ import PT from 'prop-types'
 export default function Articles(props) {
   const {
     getArticles,
+    deleteArticle,
+    setCurrentArticleId,
     articles
   }=props
 
@@ -12,12 +14,15 @@ export default function Articles(props) {
     return <Navigate to = '/' />
   }
 
-  // ✨ implement conditional logic: if no token exists
-  // we should render a Navigate to login screen (React Router v.6)
-
   useEffect(() => {
     getArticles()
   }, [])
+
+  const editHandler = (article_id) => {
+    console.log('working', article_id)
+    setCurrentArticleId(article_id)
+
+  }
 
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
@@ -36,8 +41,8 @@ export default function Articles(props) {
                   <p>Topic: {art.topic}</p>
                 </div>
                 <div>
-                  <button disabled={true} onClick={Function.prototype}>Edit</button>
-                  <button disabled={true} onClick={Function.prototype}>Delete</button>
+                  <button onClick={() => editHandler(art)}>Edit</button>
+                  <button onClick={()=> deleteArticle(art.article_id)}>Delete</button>
                 </div>
               </div>
             )
