@@ -20,10 +20,15 @@ export default function App() {
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
-  const redirectToLogin = () => { /* ✨ implement */ }
-  const redirectToArticles = () => { /* ✨ implement */ }
+  const redirectToLogin = () => { navigate('/')}
+  const redirectToArticles = () => { navigate('/articles') }
 
   const logout = () => {
+    if (localStorage.getItem('token')){
+      navigate('/articles')
+      localStorage.removeItem('token')
+      setMessage('Goodbye!')
+    }
     // ✨ implement
     // If a token is in local storage it should be removed,
     // and a message saying "Goodbye!" should be set in its proper state.
@@ -41,11 +46,13 @@ export default function App() {
         localStorage.setItem('token', res.data.token)
         setMessage(res.data.message)
         navigate('/articles')
-
         setSpinnerOn(false)
       })
       .catch(err => {
-        console.log({err})
+        // console.log({err})
+        setMessage(err.message)
+        redirectToLogin
+        setSpinnerOn(false)
       })
 
     // ✨ implement
@@ -69,6 +76,9 @@ export default function App() {
       })
       .catch(err => {
         console.log({err})
+        setMessage(err.message)
+        navigate('/')
+        setSpinnerOn(false)
       })
     // ✨ implement
     // We should flush the message state, turn on the spinner
@@ -81,6 +91,24 @@ export default function App() {
   }
 
   const postArticle = article => {
+    setSpinnerOn(true)
+    setMessage('')
+    axiosWithAuth()
+      .post(articlesUrl, article)
+      .then(res => {
+        setArticles([
+          ...articles,
+          article
+        ])
+        setMessage(res.data.message)
+        setSpinnerOn(false)
+        console.log(res)
+      })
+      .catch(err => {
+        // console.log({err})
+        setMessage(err.message)
+        setSpinnerOn(false)
+      })
     // ✨ implement
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
@@ -112,10 +140,16 @@ export default function App() {
           <Route path="/" element={<LoginForm login = {login}/>} />
           <Route path="articles"  element={
             <>
-              <ArticleForm />
+              <ArticleForm 
+              postArticle={postArticle}
+              updateArticle={updateArticle}
+              setCurrentArticleId={setCurrentArticleId}
+              />
               <Articles 
               getArticles={getArticles}
+              deleteArticle= {deleteArticle}
               articles = {articles}
+              setCurrentArticleId= {setCurrentArticleId}
               />
             </>
           } />
