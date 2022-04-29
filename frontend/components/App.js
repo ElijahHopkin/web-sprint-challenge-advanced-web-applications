@@ -64,7 +64,7 @@ export default function App() {
       .then(res => {
         setArticles(res.data.articles)
         setMessage(res.data.message)
-        console.log(res)
+        // console.log(res)
         setSpinnerOn(false)
       })
       .catch(err => {
